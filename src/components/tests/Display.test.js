@@ -1,3 +1,6 @@
+test("renders default image when image is not defined", ()=>{
+    
+})
 
 
 
