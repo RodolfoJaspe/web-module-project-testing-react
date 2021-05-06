@@ -4,28 +4,49 @@ import Episode from './../Episode';
 
 const testEpisode = {
     id:1,
-    name: "",
+    name: "Chapter One: The Vanishing of Will Byers",
     image: "http://static.tvmaze.com/uploads/images/medium_landscape/67/168918.jpg",
     season: 1,
     number: 1,
-    summary: "",
-    runtime: 1
+    summary: "A young boy mysteriously disappears, and his panicked mother demands that the police find him. Meanwhile, the boy's friends conduct their own search, and meet a mysterious girl in the forest.",
+    runtime: 60
 }
 
 const testEpisodeWithoutImage = {
     //Add in approprate test data structure here.
+    id:1,
+    name: "Chapter One: The Vanishing of Will Byers",
+    image: null,
+    season: 1,
+    number: 1,
+    summary: "A young boy mysteriously disappears, and his panicked mother demands that the police find him. Meanwhile, the boy's friends conduct their own search, and meet a mysterious girl in the forest.",
+    runtime: 60
 }
 
 test("renders without error", () => {
-
+    render(<Episode episode={testEpisode} />)
+    const season = screen.getByText(/season/i);
+    expect(season).toBeInTheDocument();
 });
 
-test("renders the summury test passed as prop", ()=>{
-    
+test("renders the summary test passed as prop", ()=>{
+    render(<Episode episode={testEpisode} />);
+    const summary = screen.getByText(/A young boy mysteriously disappears, and his panicked mother demands that the police find him. Meanwhile, the boy's friends conduct their own search, and meet a mysterious girl in the forest./i);
+    expect(summary).toBeVisible();
+    expect(summary).not.toBeFalsy();
+    expect(summary).toBeInTheDocument();
+
+    const name = screen.getByText(/Chapter One: The Vanishing of Will Byers/i);
+    expect(name).toBeInTheDocument();
+
+    const runtime = screen.getByText(/60 minutes/i);
+    expect(runtime).toBeTruthy();
 });
 
 test("renders default image when image is not defined", ()=>{
-    
+    render(<Episode episode={testEpisodeWithoutImage} />);
+    const defaultImage = screen.getByAltText(/stranger_things.png/i);
+    expect(defaultImage).toBeVisible();
 })
 
 //Tasks

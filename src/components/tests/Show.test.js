@@ -3,18 +3,44 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import Show from './../Show';
+import Loading from "../Loading";
 
 const testShow = {
     //add in approprate test data structure here.
+    name: "Test Netflix Show",
+    summary : "this is a test show",
+    seasons : [{
+        id:1, name: "First test season", episodes: [], testId: "season"
+    },{
+        id:2, name: "Second test season", episodes: [], testId: "season"
+    }]
 }
 
 test('renders testShow and no selected Season without errors', ()=>{
+    render(<Show show={testShow} selectedSeason={"none"}/>);
+
+    const testShowName = screen.getByText(/test netflix show/i);
+    expect(testShowName).toBeVisible();
+
+    const firstSeasonName = screen.getByText(/first test season/i);
+    expect(firstSeasonName).toBeVisible();
+
+    const secondSeasonName = screen.getByText(/second test season/i);
+    expect(secondSeasonName).toBeVisible();
+
 });
 
 test('renders Loading component when prop show is null', () => {
+    render(<Show show={null} />);
+
+    const loadingMessage = screen.getByText(/Fetching data.../i);
+    expect(loadingMessage).toBeVisible();
 });
 
-test('renders same number of options seasons are passed in', ()=>{
+test('renders same number of options seasons are passed in',  ()=>{
+    render(<Show show={testShow} />);
+    const testSeason = screen.findAllByTestId(/season/i);
+    expect(testSeason).toHaveBeenCalledTimes(2);
 });
 
 test('handleSelect is called when an season is selected', () => {
